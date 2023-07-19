@@ -1,5 +1,5 @@
-import {Pressable, Text, ToastAndroid, View} from "react-native";
-import {useEffect, useState} from "react";
+import { Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 interface Props {
   remainingSecs: number;
@@ -12,13 +12,14 @@ function formatNumber(number: number) {
 function getRemaining(time: number) {
   const mins = Math.floor(time / 60);
   const secs = time - mins * 60;
-  return {mins: formatNumber(mins), secs: formatNumber(secs)};
+  return { mins: formatNumber(mins), secs: formatNumber(secs) };
 }
 
 export default function Timer(props: Props) {
-  const {remainingSecs} = props;
+  const { remainingSecs } = props;
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
+  const { mins, secs } = getRemaining(timeLeft);
 
   function showToast() {
     ToastAndroid.show('Clicked', ToastAndroid.SHORT);
@@ -30,7 +31,7 @@ export default function Timer(props: Props) {
   }
 
   useEffect(() => {
-    let interval: any = null;
+    let interval: NodeJS.Timer | undefined = undefined;
     if (isActive) {
       interval = setInterval(() => {
         setTimeLeft(() => timeLeft - 1);
@@ -39,11 +40,21 @@ export default function Timer(props: Props) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isActive, timeLeft])
+  }, [isActive, timeLeft]);
 
-  return <View>
-    <Pressable onPress={handleClick}>
-      <Text>{`${getRemaining(timeLeft).mins}:${getRemaining(timeLeft).secs}`}</Text>
+  return (
+    <Pressable onPress={handleClick} style={styles.button}>
+      <Text>{`${mins}:${secs}`}</Text>
     </Pressable>
-  </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100,
+    borderRadius: 5,
+  },
+});
