@@ -1,15 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import Timer from './components/Timer';
+import Settings from './components/Settings';
 
 export default function App() {
   const [timers, setTimers] = useState([100, 50, 30, 10, 2, 0, 0, 0]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isModalVisible && { backgroundColor: 'rgba(0,0,0,0.5)' },
+      ]}
+    >
+      <View style={styles.iconContainer}>
+        <Pressable onPress={() => setIsModalVisible(!isModalVisible)}>
+          <MaterialIcons
+            icon="settings"
+            name="settings"
+            size={40}
+            style={styles.icon}
+          ></MaterialIcons>
+        </Pressable>
+      </View>
       <FlatList
+        style={styles.flatList}
         data={timers}
         numColumns={2}
         renderItem={({ item }) => {
@@ -19,6 +38,10 @@ export default function App() {
             </View>
           );
         }}
+      />
+      <Settings
+        isVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
       />
       <StatusBar style="auto" />
     </View>
@@ -30,11 +53,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    marginTop: 200,
   },
+  flatList: { marginTop: 200 },
   listItemContainer: {
     flex: 1,
     flexDirection: 'column',
     margin: 4,
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 0,
+    flex: 1,
+  },
+  icon: {
+    margin: 20,
   },
 });
