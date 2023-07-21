@@ -3,7 +3,6 @@
     "name": "pizza-timer",
     "slug": "pizza-timer",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -15,8 +14,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "requireFullScreen": true
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -26,20 +24,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-screen-orientation",
-        {
-          "initialOrientation": "DEFAULT"
-        }
-      ],
-      [
-        "expo-sensors",
-        {
-          "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion."
-        }
-      ]
-    ]
+    }
   }
 }

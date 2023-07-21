@@ -1,5 +1,6 @@
-import { Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
+import Animated from 'react-native-reanimated';
 
 interface Props {
   remainingSecs: number;
@@ -21,14 +22,17 @@ export default function Timer(props: Props) {
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
   const { mins, secs } = getRemaining(timeLeft);
 
-  function showToast() {
-    ToastAndroid.show('Clicked', ToastAndroid.SHORT);
+  function handleClick() {
+    if (timeLeft > 0) {
+      setIsActive(!isActive);
+    }
   }
 
-  function handleClick() {
-    showToast();
-    setIsActive(!isActive);
-  }
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setIsActive(false);
+    }
+  }, [timeLeft]);
 
   useEffect(() => {
     let interval: NodeJS.Timer | undefined = undefined;
@@ -43,7 +47,10 @@ export default function Timer(props: Props) {
   }, [isActive, timeLeft]);
 
   return (
-    <Pressable onPress={handleClick} style={styles.button}>
+    <Pressable
+      onPress={handleClick}
+      style={[styles.button, timeLeft === 0 && { backgroundColor: 'green' }]}
+    >
       <Text>{`${mins}:${secs}`}</Text>
     </Pressable>
   );
