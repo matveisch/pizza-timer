@@ -3,7 +3,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Dispatch, SetStateAction, useContext } from 'react';
 
 import TimerSetup from './TimerSetup';
-import { ContextType, TimersContext } from '../App';
+import { TimersContextType, TimersContext } from '../TimersContext';
 
 type Props = {
   isVisible: boolean;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function Settings({ isVisible, setIsModalVisible }: Props) {
-  const { timers } = useContext(TimersContext) as ContextType;
+  const { timers } = useContext(TimersContext) as TimersContextType;
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -32,6 +32,7 @@ export default function Settings({ isVisible, setIsModalVisible }: Props) {
           style={styles.flatList}
           data={timers}
           numColumns={2}
+          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
           renderItem={({ item, index }) => {
             return <TimerSetup timeLeft={item} timerNumber={index + 1} />;
           }}
@@ -64,8 +65,5 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 100,
   },
-  flatList: {
-    columnGap: 10,
-    rowGap: 10,
-  },
+  flatList: {},
 });

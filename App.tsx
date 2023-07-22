@@ -1,20 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import Timer from './components/Timer';
 import Settings from './components/Settings';
-
-export type ContextType = {
-  timers: number[];
-  setTimers: Dispatch<SetStateAction<number[]>>;
-};
-
-export const TimersContext = createContext<ContextType | null>(null);
+import TimersList from './components/TimersList';
+import { TimersContext } from './TimersContext';
 
 export default function App() {
-  const [timers, setTimers] = useState([100, 50, 30, 10, 2, 0, 0, 0]);
+  const [timers, setTimers] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
@@ -34,19 +28,8 @@ export default function App() {
           />
         </Pressable>
       </View>
-      <FlatList
-        style={styles.flatList}
-        data={timers}
-        numColumns={2}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.listItemContainer}>
-              <Timer remainingSecs={item} />
-            </View>
-          );
-        }}
-      />
       <TimersContext.Provider value={{ timers, setTimers }}>
+        <TimersList />
         <Settings
           isVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
@@ -62,12 +45,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-  },
-  flatList: { marginTop: 200 },
-  listItemContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    margin: 4,
   },
   iconContainer: {
     position: 'absolute',

@@ -7,11 +7,14 @@ interface Props {
   remainingSecs: number;
 }
 
-export default function Timer(props: Props) {
-  const { remainingSecs } = props;
+export default function Timer({ remainingSecs }: Props) {
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
   const { mins, secs } = getRemaining(timeLeft);
+
+  useEffect(() => {
+    setTimeLeft(remainingSecs);
+  }, [remainingSecs]);
 
   function handleClick() {
     if (timeLeft > 0) {
