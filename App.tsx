@@ -51,6 +51,7 @@ export default function App() {
         <Pressable onPress={() => setIsModalVisible(!isModalVisible)}>
           <MaterialIcons
             icon="settings"
+            color="#fff"
             name="settings"
             size={40}
             style={styles.icon}
@@ -72,12 +73,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#25292e',
     justifyContent: 'center',
   },
   iconContainer: {
     position: 'absolute',
-    top: 50,
+    top: 100,
     right: 0,
     flex: 1,
   },

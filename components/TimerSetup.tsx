@@ -74,13 +74,15 @@ const styles = StyleSheet.create({
   input: {
     borderStyle: 'solid',
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: '#fff',
     borderRadius: 4,
     padding: 1,
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 40,
+    color: '#fff',
   },
   text: {
-    fontSize: 30,
+    fontSize: 40,
+    color: '#fff',
   },
 });

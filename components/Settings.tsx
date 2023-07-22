@@ -20,6 +20,7 @@ export default function Settings({ isVisible, setIsModalVisible }: Props) {
           <Pressable onPress={() => setIsModalVisible(false)}>
             <MaterialIcons
               icon="close"
+              color="#fff"
               name="close"
               size={40}
               style={styles.icon}
@@ -29,7 +30,6 @@ export default function Settings({ isVisible, setIsModalVisible }: Props) {
       </View>
       <View style={styles.timersContainer}>
         <FlatList
-          style={styles.flatList}
           data={timers}
           numColumns={2}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
@@ -44,9 +44,9 @@ export default function Settings({ isVisible, setIsModalVisible }: Props) {
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: '98%',
+    height: '95%',
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#25292e',
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: 'absolute',
@@ -65,5 +65,4 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 100,
   },
-  flatList: {},
 });

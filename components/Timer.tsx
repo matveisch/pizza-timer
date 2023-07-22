@@ -85,7 +85,7 @@ export default function Timer({ remainingSecs }: Props) {
         timeLeft === 0 && { backgroundColor: isColorRed ? 'red' : 'green' },
       ]}
     >
-      <Text>{`${mins}:${secs}`}</Text>
+      <Text style={styles.text}>{`${mins}:${secs}`}</Text>
     </Pressable>
   );
 }
@@ -95,7 +95,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
+    height: 120,
     borderRadius: 5,
+  },
+  text: {
+    fontSize: 40,
   },
 });
