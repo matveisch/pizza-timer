@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Settings from './components/Settings';
 import TimersList from './components/TimersList';
@@ -10,6 +11,34 @@ import { TimersContext } from './TimersContext';
 export default function App() {
   const [timers, setTimers] = useState([10, 10, 10, 10, 10, 10, 10, 2]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const storeData = async (value: number[]) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('timers', jsonValue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('timers');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getData().then((data) => {
+      if (data !== null) setTimers(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    storeData(timers);
+  }, [timers]);
 
   return (
     <View
