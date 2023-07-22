@@ -8,7 +8,7 @@ import TimersList from './components/TimersList';
 import { TimersContext } from './TimersContext';
 
 export default function App() {
-  const [timers, setTimers] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+  const [timers, setTimers] = useState([10, 10, 10, 10, 10, 10, 10, 2]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (

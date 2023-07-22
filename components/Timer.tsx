@@ -13,6 +13,8 @@ export default function Timer({ remainingSecs }: Props) {
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
   const { mins, secs } = getRemaining(timeLeft);
   const [sound, setSound] = useState<Audio.Sound>();
+  const [isColorRed, setIsColorRed] = useState(false);
+  const [shouldBlink, setShouldBlink] = useState(false);
 
   // resetting timeLeft when props changing
   useEffect(() => {
@@ -22,12 +24,16 @@ export default function Timer({ remainingSecs }: Props) {
   function handleClick() {
     if (timeLeft > 0) {
       setIsActive(!isActive);
+    } else if (timeLeft <= 0) {
+      setShouldBlink(false);
+      setTimeLeft(remainingSecs);
     }
   }
 
   useEffect(() => {
     if (timeLeft <= 0) {
       if (isActive) playSound();
+      setShouldBlink(true);
       setIsActive(false);
     }
   }, [timeLeft]);
@@ -60,10 +66,24 @@ export default function Timer({ remainingSecs }: Props) {
       : undefined;
   }, [sound]);
 
+  useEffect(() => {
+    // Change the state every second or the time given by User.
+    let interval: NodeJS.Timer | undefined = undefined;
+    if (shouldBlink) {
+      interval = setInterval(() => {
+        setIsColorRed((colorRed) => !colorRed);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [shouldBlink]);
+
   return (
     <Pressable
       onPress={handleClick}
-      style={[styles.button, timeLeft === 0 && { backgroundColor: 'green' }]}
+      style={[
+        styles.button,
+        timeLeft === 0 && { backgroundColor: isColorRed ? 'red' : 'green' },
+      ]}
     >
       <Text>{`${mins}:${secs}`}</Text>
     </Pressable>

@@ -1,7 +1,8 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import Timer from './Timer';
 import { useContext } from 'react';
+
 import { TimersContext, TimersContextType } from '../TimersContext';
+import Timer from './Timer';
 
 export default function TimersList() {
   const { timers } = useContext(TimersContext) as TimersContextType;
