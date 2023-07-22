@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { formatNumber, getRemaining } from '../lib';
 import { TimersContextType, TimersContext } from '../TimersContext';
@@ -25,11 +25,19 @@ export default function TimerSetup({ timeLeft, timerNumber }: Props) {
     setSecSetup(formatNumber(parseInt(secSetup)));
   }
 
+  function handleBlur(value: string, set: Dispatch<SetStateAction<string>>) {
+    if (value === '') {
+      set('00');
+    }
+  }
+
   return (
     <View style={styles.timerContainer}>
-      <Text>Timer {timerNumber}: </Text>
+      <Text style={styles.text}>Timer {timerNumber}: </Text>
       <View style={styles.inputsContainer}>
         <TextInput
+          onFocus={() => setMinSetup('')}
+          onBlur={() => handleBlur(minSetup, setMinSetup)}
           onChangeText={(text) => setMinSetup(text)}
           onEndEditing={handleUpdate}
           defaultValue={minSetup}
@@ -38,6 +46,8 @@ export default function TimerSetup({ timeLeft, timerNumber }: Props) {
           style={styles.input}
         />
         <TextInput
+          onFocus={() => setSecSetup('')}
+          onBlur={() => handleBlur(secSetup, setSecSetup)}
           onChangeText={(text) => setSecSetup(text)}
           onEndEditing={handleUpdate}
           defaultValue={secSetup}
@@ -63,10 +73,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: 'black',
     borderRadius: 4,
     padding: 1,
     textAlign: 'center',
+    fontSize: 30,
+  },
+  text: {
+    fontSize: 30,
   },
 });
