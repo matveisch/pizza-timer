@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-
-import { getRemaining } from '../lib';
 import { useContext, useState } from 'react';
+
+import { formatNumber, getRemaining } from '../lib';
 import { TimersContextType, TimersContext } from '../TimersContext';
 
 type Props = {
@@ -16,9 +16,13 @@ export default function TimerSetup({ timeLeft, timerNumber }: Props) {
   const { timers, setTimers } = useContext(TimersContext) as TimersContextType;
 
   function handleUpdate() {
+    // updating array value
     const timersCopy = [...timers];
     timersCopy[timerNumber - 1] = parseInt(minSetup) * 60 + parseInt(secSetup);
     setTimers(timersCopy);
+
+    setMinSetup(formatNumber(parseInt(minSetup)));
+    setSecSetup(formatNumber(parseInt(secSetup)));
   }
 
   return (

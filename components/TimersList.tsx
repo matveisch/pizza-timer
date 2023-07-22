@@ -9,8 +9,6 @@ export default function TimersList() {
   // Create a new array with updated remaining seconds
   const updatedTimers = timers.map((timer) => ({ remainingSecs: timer }));
 
-  console.log(timers);
-
   return (
     <FlatList
       style={styles.flatList}

@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
+import { Audio } from 'expo-av';
 
 import { getRemaining } from '../lib';
 
@@ -11,7 +12,9 @@ export default function Timer({ remainingSecs }: Props) {
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
   const { mins, secs } = getRemaining(timeLeft);
+  const [sound, setSound] = useState<Audio.Sound>();
 
+  // resetting timeLeft when props changing
   useEffect(() => {
     setTimeLeft(remainingSecs);
   }, [remainingSecs]);
@@ -24,6 +27,7 @@ export default function Timer({ remainingSecs }: Props) {
 
   useEffect(() => {
     if (timeLeft <= 0) {
+      if (isActive) playSound();
       setIsActive(false);
     }
   }, [timeLeft]);
@@ -39,6 +43,22 @@ export default function Timer({ remainingSecs }: Props) {
     }
     return () => clearInterval(interval);
   }, [isActive, timeLeft]);
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require('../assets/microwave-timer-117077.mp3')
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound?.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <Pressable

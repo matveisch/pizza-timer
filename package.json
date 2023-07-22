@@ -15,7 +15,8 @@
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-reanimated": "~2.14.4",
-    "react-native-stopwatch-timer": "^0.0.21"
+    "react-native-stopwatch-timer": "^0.0.21",
+    "expo-av": "~13.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
