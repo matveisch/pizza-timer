@@ -1,14 +1,18 @@
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Modal, Pressable, StyleSheet, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 
-export default function Settings({
-  isVisible,
-  setIsModalVisible,
-}: {
+import TimerSetup from './TimerSetup';
+import { ContextType, TimersContext } from '../App';
+
+type Props = {
   isVisible: boolean;
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
-}) {
+};
+
+export default function Settings({ isVisible, setIsModalVisible }: Props) {
+  const { timers } = useContext(TimersContext) as ContextType;
+
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.modalContent}>
@@ -22,7 +26,16 @@ export default function Settings({
             />
           </Pressable>
         </View>
-        <Text>Settings</Text>
+      </View>
+      <View style={styles.timersContainer}>
+        <FlatList
+          style={styles.flatList}
+          data={timers}
+          numColumns={2}
+          renderItem={({ item, index }) => {
+            return <TimerSetup timeLeft={item} timerNumber={index + 1} />;
+          }}
+        />
       </View>
     </Modal>
   );
@@ -30,7 +43,7 @@ export default function Settings({
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: '95%',
+    height: '98%',
     width: '100%',
     backgroundColor: 'white',
     borderTopRightRadius: 18,
@@ -46,5 +59,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     margin: 20,
+  },
+  timersContainer: {
+    flex: 1,
+    marginTop: 100,
+  },
+  flatList: {
+    columnGap: 10,
+    rowGap: 10,
   },
 });

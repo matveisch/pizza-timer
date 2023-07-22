@@ -1,18 +1,10 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 
+import { getRemaining } from '../lib';
+
 interface Props {
   remainingSecs: number;
-}
-
-function formatNumber(number: number) {
-  return `0${number}`.slice(-2);
-}
-
-function getRemaining(time: number) {
-  const mins = Math.floor(time / 60);
-  const secs = time - mins * 60;
-  return { mins: formatNumber(mins), secs: formatNumber(secs) };
 }
 
 export default function Timer(props: Props) {

@@ -1,10 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useState } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import Timer from './components/Timer';
 import Settings from './components/Settings';
+
+export type ContextType = {
+  timers: number[];
+  setTimers: Dispatch<SetStateAction<number[]>>;
+};
+
+export const TimersContext = createContext<ContextType | null>(null);
 
 export default function App() {
   const [timers, setTimers] = useState([100, 50, 30, 10, 2, 0, 0, 0]);
@@ -24,7 +31,7 @@ export default function App() {
             name="settings"
             size={40}
             style={styles.icon}
-          ></MaterialIcons>
+          />
         </Pressable>
       </View>
       <FlatList
@@ -39,10 +46,12 @@ export default function App() {
           );
         }}
       />
-      <Settings
-        isVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-      />
+      <TimersContext.Provider value={{ timers, setTimers }}>
+        <Settings
+          isVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+        />
+      </TimersContext.Provider>
       <StatusBar style="auto" />
     </View>
   );
