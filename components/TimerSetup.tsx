@@ -69,20 +69,22 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flexDirection: 'row',
-    gap: 6,
+    gap: 20,
   },
   input: {
     borderStyle: 'solid',
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: '#fff',
     borderRadius: 4,
     padding: 1,
     textAlign: 'center',
     fontSize: 40,
+    fontWeight: 'bold',
     color: '#fff',
   },
   text: {
     fontSize: 40,
+    fontWeight: 'bold',
     color: '#fff',
   },
 });
