@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Settings from './components/Settings';
 import TimersList from './components/TimersList';
 import { TimersContext } from './TimersContext';
-import AnimatedColor from './components/AnimatedColor';
 
 export default function App() {
   const [timers, setTimers] = useState([10, 10, 10, 10, 10, 10, 10, 2]);

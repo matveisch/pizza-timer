@@ -21,7 +21,7 @@ export default function Timer({ remainingSecs }: Props) {
 
   // animation states
   const [isAnimating, setIsAnimating] = useState(false);
-  const [animation, setAnimation] = useState(new Animated.Value(0));
+  const [animation] = useState(new Animated.Value(0));
   const [currentColor, setCurrentColor] = useState<any>('red');
   const animationValueRef = useRef(0);
 
@@ -92,7 +92,6 @@ export default function Timer({ remainingSecs }: Props) {
     if (!isAnimating) {
       // Animation is not running, start the animation
       setIsAnimating(true);
-      // animation.setValue(0); // only if timer is up
       Animated.timing(animation, {
         useNativeDriver: false,
         toValue: 1,

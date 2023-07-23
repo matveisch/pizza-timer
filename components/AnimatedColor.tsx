@@ -8,7 +8,7 @@ import {
 
 export default function AnimatedColor() {
   const [isAnimating, setIsAnimating] = useState(false);
-  const [animation, setAnimation] = useState(new Animated.Value(0));
+  const [animation] = useState(new Animated.Value(0));
   const [currentColor, setCurrentColor] = useState<any>('red');
   const animationValueRef = useRef(0);
 
