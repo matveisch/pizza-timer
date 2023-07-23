@@ -59,14 +59,13 @@ export default function App() {
           />
         </Pressable>
       </View>
-      {/*<TimersContext.Provider value={{ timers, setTimers }}>*/}
-      {/*  <TimersList />*/}
-      {/*  <Settings*/}
-      {/*    isVisible={isModalVisible}*/}
-      {/*    setIsModalVisible={setIsModalVisible}*/}
-      {/*  />*/}
-      {/*</TimersContext.Provider>*/}
-      <AnimatedColor />
+      <TimersContext.Provider value={{ timers, setTimers }}>
+        <TimersList />
+        <Settings
+          isVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+        />
+      </TimersContext.Provider>
       <StatusBar style="auto" />
     </View>
   );

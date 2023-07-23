@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
   Animated,
   TouchableWithoutFeedback,
 } from 'react-native';
+
 export default function AnimatedColor() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
@@ -15,6 +16,7 @@ export default function AnimatedColor() {
     if (!isAnimating) {
       // Animation is not running, start the animation
       setIsAnimating(true);
+      // animation.setValue(0); // only if timer is up
       Animated.timing(animation, {
         useNativeDriver: false,
         toValue: 1,
@@ -52,6 +54,7 @@ export default function AnimatedColor() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

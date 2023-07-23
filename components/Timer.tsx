@@ -1,5 +1,5 @@
 import { Animated, Pressable, StyleSheet, Text } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 
 import { getRemaining } from '../lib';
@@ -9,13 +9,21 @@ interface Props {
 }
 
 export default function Timer({ remainingSecs }: Props) {
+  // timer states
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
   const { mins, secs } = getRemaining(timeLeft);
+
+  // color & sound states
   const [sound, setSound] = useState<Audio.Sound>();
   const [isColorRed, setIsColorRed] = useState(false);
   const [shouldBlink, setShouldBlink] = useState(false);
+
+  // animation states
+  const [isAnimating, setIsAnimating] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
+  const [currentColor, setCurrentColor] = useState<any>('red');
+  const animationValueRef = useRef(0);
 
   // resetting timeLeft when props changing
   useEffect(() => {
@@ -35,6 +43,7 @@ export default function Timer({ remainingSecs }: Props) {
   useEffect(() => {
     if (timeLeft <= 0) {
       if (isActive) playSound();
+      animation.setValue(0);
       setShouldBlink(true);
       setIsActive(false);
     }
@@ -80,25 +89,37 @@ export default function Timer({ remainingSecs }: Props) {
   }, [shouldBlink]);
 
   const handleAnimation = () => {
-    Animated.timing(animation, {
-      useNativeDriver: false,
-      toValue: 1,
-      duration: timeLeft * 1000,
-    }).start(() => {
+    if (!isAnimating) {
+      // Animation is not running, start the animation
+      setIsAnimating(true);
+      // animation.setValue(0); // only if timer is up
       Animated.timing(animation, {
         useNativeDriver: false,
-        toValue: 0,
+        toValue: 1,
         duration: timeLeft * 1000,
-      }).start();
-    });
+      }).start(({ finished }) => {
+        if (finished) {
+          // Save the current color and stop the animation
+          setIsAnimating(false);
+        }
+      });
+    } else {
+      // Animation is running, stop the animation
+      animation.stopAnimation((value) => {
+        setIsAnimating(false);
+        setCurrentColor(boxInterpolation);
+        animationValueRef.current = value; // Save the current value
+      });
+    }
   };
 
   const boxInterpolation = animation.interpolate({
     inputRange: [0, 1],
     outputRange: ['red', 'green'],
   });
+
   const animatedStyle = {
-    backgroundColor: boxInterpolation,
+    backgroundColor: isAnimating ? boxInterpolation : currentColor,
   };
 
   return (
