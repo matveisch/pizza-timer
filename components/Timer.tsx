@@ -25,13 +25,15 @@ export default function Timer({ remainingSecs }: Props) {
   const [currentColor, setCurrentColor] = useState<any>('red');
   const animationValueRef = useRef(0);
 
-  // resetting timeLeft when props changing
+  // resetting timeLeft & color animation when props changing
   useEffect(() => {
     setTimeLeft(remainingSecs);
+    animation.setValue(0);
   }, [remainingSecs]);
 
   function handleClick() {
     if (timeLeft > 0) {
+      // stop or upstop the timer & start or unstart color animation
       setIsActive(!isActive);
       handleAnimation();
     } else if (timeLeft <= 0) {
