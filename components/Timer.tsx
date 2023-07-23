@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Audio } from 'expo-av';
 
@@ -15,6 +15,7 @@ export default function Timer({ remainingSecs }: Props) {
   const [sound, setSound] = useState<Audio.Sound>();
   const [isColorRed, setIsColorRed] = useState(false);
   const [shouldBlink, setShouldBlink] = useState(false);
+  const [animation, setAnimation] = useState(new Animated.Value(0));
 
   // resetting timeLeft when props changing
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function Timer({ remainingSecs }: Props) {
   function handleClick() {
     if (timeLeft > 0) {
       setIsActive(!isActive);
+      handleAnimation();
     } else if (timeLeft <= 0) {
       setShouldBlink(false);
       setTimeLeft(remainingSecs);
@@ -77,15 +79,39 @@ export default function Timer({ remainingSecs }: Props) {
     return () => clearInterval(interval);
   }, [shouldBlink]);
 
+  const handleAnimation = () => {
+    Animated.timing(animation, {
+      useNativeDriver: false,
+      toValue: 1,
+      duration: timeLeft * 1000,
+    }).start(() => {
+      Animated.timing(animation, {
+        useNativeDriver: false,
+        toValue: 0,
+        duration: timeLeft * 1000,
+      }).start();
+    });
+  };
+
+  const boxInterpolation = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['red', 'green'],
+  });
+  const animatedStyle = {
+    backgroundColor: boxInterpolation,
+  };
+
   return (
-    <Pressable
-      onPress={handleClick}
-      style={[
-        styles.button,
-        timeLeft === 0 && { backgroundColor: isColorRed ? 'red' : 'green' },
-      ]}
-    >
-      <Text style={styles.text}>{`${mins}:${secs}`}</Text>
+    <Pressable onPress={handleClick}>
+      <Animated.View
+        style={[
+          styles.button,
+          animatedStyle,
+          timeLeft === 0 && { backgroundColor: isColorRed ? 'red' : 'green' },
+        ]}
+      >
+        <Text style={styles.text}>{`${mins}:${secs}`}</Text>
+      </Animated.View>
     </Pressable>
   );
 }
