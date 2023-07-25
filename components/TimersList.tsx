@@ -19,7 +19,11 @@ export default function TimersList() {
       renderItem={({ item, index }) => {
         return (
           <View style={styles.listItemContainer}>
-            <Timer remainingSecs={item.remainingSecs} key={`timer-${index}`} />
+            <Timer
+              remainingSecs={item.remainingSecs}
+              key={`timer-${index}`}
+              index={index}
+            />
           </View>
         );
       }}

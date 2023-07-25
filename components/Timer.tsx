@@ -6,9 +6,10 @@ import { getRemaining } from '../lib';
 
 interface Props {
   remainingSecs: number;
+  index: number;
 }
 
-export default function Timer({ remainingSecs }: Props) {
+export default function Timer({ remainingSecs, index }: Props) {
   // timer states
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(remainingSecs);
@@ -123,15 +124,21 @@ export default function Timer({ remainingSecs }: Props) {
     backgroundColor: isAnimating ? boxInterpolation : currentColor,
   };
 
+  const buttonStyle =
+    index === 4 || index === 5
+      ? { ...styles.button, marginTop: 40 }
+      : styles.button;
+
   return (
     <Pressable onPress={handleClick}>
       <Animated.View
         style={[
-          styles.button,
+          buttonStyle,
           animatedStyle,
           timeLeft === 0 && { backgroundColor: isColorRed ? 'red' : 'green' },
         ]}
       >
+        <Text style={styles.index}>{index + 1}</Text>
         <Text style={styles.text}>{`${mins}:${secs}`}</Text>
       </Animated.View>
     </Pressable>
@@ -143,12 +150,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 120,
+    height: 140,
     borderRadius: 5,
   },
   text: {
     fontSize: 40,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  index: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#fff',
+    position: 'absolute',
+    top: 0,
+    left: 10,
   },
 });
