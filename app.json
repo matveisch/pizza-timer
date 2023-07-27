@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pizza-timer",
-    "slug": "pizza-timer",
+    "name": "izi timer",
+    "slug": "izi-timer",
     "version": "1.0.0",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,11 +19,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#800042"
+      },
+      "package": "com.matveisch.izitimer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9d5be6d4-077e-4f76-af45-2cc8d935ea32"
+      }
     }
   }
 }
